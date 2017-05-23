@@ -1,5 +1,5 @@
 {
-  "name": "turn nstream",
+  "name": "nstream",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,8 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
+    "angular": "^1.6.4",
+    "d3": "^4.9.1",
     "ejs": "^2.5.6",
     "express": "^4.15.3"
   }
