@@ -1,9 +1,29 @@
 <% include header.ejs %>
 
 <div ng-controller="HomeController as ctrl">
-    {{ctrl.test}}
-</div>
+    <style type="text/css">
 
-<script type="text/javascript" src="/js/home.controller.js"></script>
+        circle {
+            fill: rgb(31, 119, 180);
+            fill-opacity: .25;
+            stroke: rgb(31, 119, 180);
+            stroke-width: 1px;
+        }
+
+        .leaf circle {
+            fill: #ff7f0e;
+            fill-opacity: 1;
+        }
+
+        text {
+            font: 10px sans-serif;
+            text-anchor: middle;
+        }
+    </style>
+    <svg width="960" height="960"></svg>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <script type="text/javascript" src="/js/home.controller.js"></script>
+</div>
 
 <% include footer.ejs %>
