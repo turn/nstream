@@ -33,9 +33,19 @@ var gravityPoints = [
         x: 220
     },
     {
-        id: 2,
+        id: 3,
         y: 620,
         x: 220
+    },
+    {
+        id: 4,
+        y: 380,
+        x: 720
+    },
+    {
+        id: 5,
+        y: 620,
+        x: 720
     }
 ];
 
@@ -97,7 +107,7 @@ function activateCircle(node) {
 }
 
 function switchCircleToPreBeacon(d, circle) {
-    circle.gravityPoint = gravityPoints[1];
+    circle.gravityPoint = circle.category === 'auto' ? gravityPoints[3] : gravityPoints[1];
     circle.state = 2;
 
     d3.select(d).style('fill', weightColors[circle.weight]);
@@ -107,7 +117,7 @@ function switchCircleToPreBeacon(d, circle) {
 function switchCircleToBeacon(d, circle) {
     var color = d3.scale.category10().domain(d3.range(10));
 
-    circle.gravityPoint = gravityPoints[2];
+    circle.gravityPoint = circle.category === 'auto' ? gravityPoints[5] : gravityPoints[2];
     circle.state = 3;
 
     d3.select(d).style('fill', colors[2]);
@@ -263,6 +273,35 @@ function processNewNodes(result) {
     _.each(
         result['fashion0'].rows, function(item) {
             item.weight = 0;
+            nodesToAdd.push(item);
+        }
+    );
+
+    _.each(
+        result['car0'].rows, function(item) {
+            item.weight = 3;
+            item.category = 'auto';
+            nodesToAdd.push(item);
+        }
+    );
+    _.each(
+        result['car1'].rows, function(item) {
+            item.weight = 2;
+            item.category = 'auto';
+            nodesToAdd.push(item);
+        }
+    );
+    _.each(
+        result['car2'].rows, function(item) {
+            item.weight = 1;
+            item.category = 'auto';
+            nodesToAdd.push(item);
+        }
+    );
+    _.each(
+        result['car3'].rows, function(item) {
+            item.weight = 0;
+            item.category = 'auto';
             nodesToAdd.push(item);
         }
     );
