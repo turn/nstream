@@ -111,6 +111,7 @@ function activateCircle(node, alreadyExists, removeNode) {
     );
 
     if (lowestItem) {
+        lowestItem.visible = true;
         lowestItem.weight = node.weight;
         lowestItem.category = node.category;
         lowestItem.activated = node.activated;
@@ -130,6 +131,7 @@ function switchCircleToPool(d, circle) {
     d.id = null;
     d.category = null;
     d.weight = null;
+    d.visible = false;
 
     circle.gravityPoint = gravityPoints[0];
     d3.select(d).style('fill', colors[0]);
@@ -372,7 +374,7 @@ function processNewNodes(result) {
     for (var i = 0; i < activeFashionNodes.length; i++) {
         let node = activeFashionNodes[i];
 
-        if (random_expiry()) {
+        if (node.visible && random_expiry()) {
             activeFashionNodes = _.reject(activeFashionNodes, node);
             activateCircle(node, true, true);
         }
@@ -381,8 +383,8 @@ function processNewNodes(result) {
     for (var i = 0; i < activeAutoNodes.length; i++) {
         let node = activeAutoNodes[i];
 
-        if (random_expiry()) {
-            activeAutoNodes = _.reject(activeFashionNodes, node);
+        if (node.visible && random_expiry()) {
+            activeFashionNodes = _.reject(activeFashionNodes, node);
             activateCircle(node, true, true);
         }
     }
