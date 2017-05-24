@@ -469,7 +469,7 @@ function random_boolean() {
 }
 
 function random_expiry() {
-    return Math.random() >= 0.80;
+    return Math.random() >= 0.90;
 }
 
 var queueInterval = setInterval(
