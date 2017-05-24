@@ -490,7 +490,9 @@ var expiryInterval = setInterval(
                 let randomExpiry = random_expiry();
 
                 if (d.id && randomExpiry) {
-                    switchCircleToPool(this, d);
+                    if (!d.activated || (d.activated && random_expiry())) {
+                        switchCircleToPool(this, d);
+                    }
                 }
             }
         );
