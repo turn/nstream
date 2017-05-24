@@ -369,21 +369,21 @@ function processNewNodes(result) {
         }
     );
 
-    _.each(
-        activeFashionNodes, function(node) {
-            if (random_expiry() === true) {
-                activateCircle(node, true, true);
-            }
-        }
-    );
+    for (var i = 0; i < activeFashionNodes.length; i++) {
+        let node = activeFashionNodes[i];
 
-    _.each(
-        activeAutoNodes, function(node) {
-            if (random_expiry() === true) {
-                activateCircle(node, true, true);
-            }
+        if (random_expiry() === true) {
+            activateCircle(node, true, true);
         }
-    );
+    }
+
+    for (var i = 0; i < activeAutoNodes.length; i++) {
+        let node = activeAutoNodes[i];
+
+        if (random_expiry() === true) {
+            activateCircle(node, true, true);
+        }
+    }
 
     _.each(
         fashionNodesToAdd, function(node) {
