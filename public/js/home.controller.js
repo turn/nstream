@@ -246,14 +246,8 @@ function processNewNodes(result) {
     var nodesToAdd = [];
 
     _.each(
-        result['fashion0'].rows, function(item) {
-            item.weight = 0;
-            nodesToAdd.push(item);
-        }
-    );
-    _.each(
-        result['fashion1'].rows, function(item) {
-            item.weight = 1;
+        result['fashion3'].rows, function(item) {
+            item.weight = 3;
             nodesToAdd.push(item);
         }
     );
@@ -264,8 +258,14 @@ function processNewNodes(result) {
         }
     );
     _.each(
-        result['fashion3'].rows, function(item) {
-            item.weight = 3;
+        result['fashion1'].rows, function(item) {
+            item.weight = 1;
+            nodesToAdd.push(item);
+        }
+    );
+    _.each(
+        result['fashion0'].rows, function(item) {
+            item.weight = 0;
             nodesToAdd.push(item);
         }
     );
@@ -370,7 +370,7 @@ function getAllUsers() {
 var pollInterval = setInterval(
     function() {
         getAllUsers().then(processNewNodes);
-    }, 5000
+    }, 15000
 );
 
 var queueInterval = setInterval(
