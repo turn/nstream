@@ -1,80 +1,110 @@
 'use strict';
 
-var moduleName = 'TurnStreamingApp';
-var module = angular.module(moduleName, []);
+var width = 960,
+    height = 600,
+    padding = 6;
 
-module.controller(
-    'HomeController', [
-        function() {
-            var _self = this;
+var n = 100, // total number of nodes
+    m = 1; // number of distinct clusters
 
-            var svg = d3.select("svg"),
-                diameter = +svg.attr("width"),
-                g = svg.append("g").attr("transform", "translate(2,2)"),
-                format = d3.format(",d");
+var color = d3.scale.category10()
+    .domain(d3.range(m));
 
-            var pack = d3.pack()
-                .size([diameter - 4, diameter - 4]);
+var x = d3.scale.ordinal()
+    .domain(d3.range(m))
+    .rangePoints([0, width], 1);
 
-            d3.json(
-                "flare.json", function(error, root) {
-                    if (error) {
-                        throw error;
-                    }
-
-                    root = d3.hierarchy(root)
-                        .sum(
-                            function(d) {
-                                return d.size;
-                            }
-                        )
-                        .sort(
-                            function(a, b) {
-                                return b.value - a.value;
-                            }
-                        );
-
-                    var node = g.selectAll(".node")
-                        .data(pack(root).descendants())
-                        .enter().append("g")
-                        .attr(
-                            "class", function(d) {
-                                return d.children ? "node" : "leaf node";
-                            }
-                        )
-                        .attr(
-                            "transform", function(d) {
-                                return "translate(" + d.x + "," + d.y + ")";
-                            }
-                        );
-
-                    node.append("title")
-                        .text(
-                            function(d) {
-                                return d.data.name + "\n" + format(d.value);
-                            }
-                        );
-
-                    node.append("circle")
-                        .attr(
-                            "r", function(d) {
-                                return d.r;
-                            }
-                        );
-
-                    node.filter(
-                        function(d) {
-                            return !d.children;
-                        }
-                    ).append("text")
-                        .attr("dy", "0.3em")
-                        .text(
-                            function(d) {
-                                return d.data.name.substring(0, d.r / 3);
-                            }
-                        );
-                }
-            );
-        }
-    ]
+var nodes = d3.range(n).map(
+    function() {
+        var i = Math.floor(Math.random() * m),
+            v = (i + 1) / m * -Math.log(Math.random());
+        return {
+            radius: 5,
+            color: color(i),
+            cx: x(i),
+            cy: height / 2
+        };
+    }
 );
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .size([width, height])
+    .gravity(0)
+    .charge(0)
+    .on("tick", tick)
+    .start();
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var circle = svg.selectAll("circle")
+    .data(nodes)
+    .enter().append("circle")
+    .attr(
+        "r", function(d) {
+            return d.radius;
+        }
+    )
+    .style(
+        "fill", function(d) {
+            return d.color;
+        }
+    )
+    .call(force.drag);
+
+function tick(e) {
+    circle
+        .each(gravity(.1 * e.alpha))
+        .each(collide(.5))
+        .attr(
+            "cx", function(d) {
+                return d.x;
+            }
+        )
+        .attr(
+            "cy", function(d) {
+                return d.y;
+            }
+        );
+}
+
+// Move nodes toward cluster focus.
+function gravity(alpha) {
+    return function(d) {
+        d.y += (d.cy - d.y) * alpha;
+        d.x += (d.cx - d.x) * alpha;
+    };
+}
+
+// Resolve collisions between nodes.
+function collide(alpha) {
+    var quadtree = d3.geom.quadtree(nodes);
+    return function(d) {
+        var r = d.radius,
+            nx1 = d.x - r,
+            nx2 = d.x + r,
+            ny1 = d.y - r,
+            ny2 = d.y + r;
+
+        quadtree.visit(
+            function(quad, x1, y1, x2, y2) {
+                if (quad.point && (quad.point !== d)) {
+                    var x = d.x - quad.point.x,
+                        y = d.y - quad.point.y,
+                        l = Math.sqrt(x * x + y * y),
+                        r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                    if (l < r) {
+                        l = (l - r) / l * alpha;
+                        d.x -= x *= l;
+                        d.y -= y *= l;
+                        quad.point.x += x;
+                        quad.point.y += y;
+                    }
+                }
+                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            }
+        );
+    };
+}

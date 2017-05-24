@@ -16,6 +16,12 @@ app.get(
     }
 );
 
+app.get(
+    '/reporting', (request, response) => {
+        response.render('reporting');
+    }
+);
+
 app.listen(
     port, (err) => {
         if (err) {
