@@ -321,6 +321,24 @@ function processNewNodes(result) {
             else {
                 alreadyExists.weight = node.weight;
             }
+
+            var isActived = _.find(
+                result['fashionBeacon'].rows, function(item) {
+                    return item[0] === node[0];
+                }
+            );
+
+            if (!isActived) {
+                isActived = _.find(
+                    result['carBeacon'].rows, function(item) {
+                        return item[0] === node[0];
+                    }
+                );
+            }
+
+            if (isActived) {
+                node.activated = true;
+            }
         }
     );
 

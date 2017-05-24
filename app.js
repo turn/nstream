@@ -35,6 +35,7 @@ app.get(
             'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984487&response-formatter=json',
             'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984488&response-formatter=json',
             'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984489&response-formatter=json',
+            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984490&response-formatter=json',
             'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742742&response-formatter=json',
             'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742651&response-formatter=json'
         ];
@@ -66,7 +67,7 @@ app.get(
                         car2: r[6],
                         car3: r[7],
                         fashionBeacon: r[8],
-                        autoBeacon: r[9]
+                        carBeacon: r[9]
                     }
                 )
             }
