@@ -430,14 +430,22 @@ var pollInterval = setInterval(
     }, 15000
 );
 
+function random_boolean() {
+    return Math.random() >= 0.5;
+}
+
 var queueInterval = setInterval(
     function() {
         if (circleQueue.length > 0) {
             activateCircle(circleQueue[0]);
 
             circleQueue.shift();
+
+            if (random_boolean()) {
+                circleQueue.shift();
+            }
         }
-    }, 500
+    }, 200
 );
 
 setTimeout(
