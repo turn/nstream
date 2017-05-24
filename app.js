@@ -4,6 +4,7 @@ const path = require('path');
 const request = require('request');
 const async = require('async');
 const express = require('express');
+const _ = require('underscore');
 const app = express();
 const port = 3000;
 
@@ -25,37 +26,102 @@ app.get(
 );
 
 app.get(
-    '/getUsers', (req, res) => {
+    '/beacon', (request, response) => {
+        getUsers(
+            function(r) {
+                var users = [];
 
-        var urls = [
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984210&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984208&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984214&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984213&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984487&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984488&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984489&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984490&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742742&response-formatter=json',
-            'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742651&response-formatter=json'
-        ];
-
-        function requester(url, done) {
-            request(
-                url, function(err, r, body) {
-                    if (err) {
-                        return done(err);
+                _.each(
+                    r['3'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742742';
+                            users.push(item);
+                        }
                     }
-                    done(null, JSON.parse(body));
-                }
-            )
-        }
+                );
+                _.each(
+                    r['2'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742742';
+                            users.push(item);
+                        }
+                    }
+                );
+                _.each(
+                    r['1'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742742';
+                            users.push(item);
+                        }
+                    }
+                );
+                _.each(
+                    r['0'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742742';
+                            users.push(item);
+                        }
+                    }
+                );
 
-        async.map(
-            urls, requester, function(err, r) {
-                if (err) {
-                    return;
-                }
+                _.each(
+                    r['7'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742651';
+                            users.push(item);
+                        }
+                    }
+                );
+                _.each(
+                    r['6'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742651';
+                            users.push(item);
+                        }
+                    }
+                );
+                _.each(
+                    r['5'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742651';
+                            users.push(item);
+                        }
+                    }
+                );
+                _.each(
+                    r['4'].rows, function(item) {
+                        if (!checkDuplicates(users, item)) {
+                            item.beacon = '1603742651';
+                            users.push(item);
+                        }
+                    }
+                );
+
+                var user = users[Math.floor(Math.random() * users.length)];
+
+                request(
+                    'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=set_beacon&turn_category_id=&user_ids=' + user
+                    + '&beacon_id=' + user.beacon + '&response-formatter=json', function(err, res, body) {
+                        res.send(res);
+                    }
+                );
+            }
+        );
+    }
+);
+
+function checkDuplicates(list, user) {
+    return _.find(
+        list, function(item) {
+            return item[0] === user[0];
+        }
+    );
+}
+
+app.get(
+    '/getUsers', (req, res) => {
+        getUsers(
+            function(r) {
                 res.send(
                     {
                         fashion0: r[0],
@@ -74,6 +140,42 @@ app.get(
         );
     }
 );
+
+function getUsers(callback) {
+    var urls = [
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984210&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984208&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984214&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984213&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984487&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984488&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984489&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984490&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742742&response-formatter=json',
+        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742651&response-formatter=json'
+    ];
+
+    function requester(url, done) {
+        request(
+            url, function(err, r, body) {
+                if (err) {
+                    return done(err);
+                }
+                done(null, JSON.parse(body));
+            }
+        )
+    }
+
+    async.map(
+        urls, requester, function(err, r) {
+            if (err) {
+                return;
+            }
+
+            callback(r);
+        }
+    );
+}
 
 /**
  app.get(
