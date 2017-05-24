@@ -78,7 +78,7 @@ var activeFashionNodes = [];
 var activeAutoNodes = [];
 var circleQueue = [];
 
-function activateCircle(node, alreadyExists) {
+function activateCircle(node, alreadyExists, removeNode) {
     var lowestScope = null;
     var lowestItem = null;
 
@@ -97,9 +97,14 @@ function activateCircle(node, alreadyExists) {
                 }
             }
             else {
-                if (node.id === d.id && node.category == d.category) {
-                    lowestScope = this;
-                    lowestItem = d;
+                if (removeNode) {
+                    switchCircleToPool(this, d);
+                }
+                else {
+                    if (node.id === d.id && node.category == d.category) {
+                        lowestScope = this;
+                        lowestItem = d;
+                    }
                 }
             }
         }
@@ -118,6 +123,16 @@ function activateCircle(node, alreadyExists) {
             switchCircleToBeacon(lowestScope, lowestItem);
         }
     }
+}
+
+function switchCircleToPool(d, circle) {
+    d.activated = false;
+    d.id = null;
+    d.category = null;
+    d.weight = null;
+
+    circle.gravityPoint = gravityPoints[0];
+    d3.select(d).style('fill', colors[0]);
 }
 
 function switchCircleToPreBeacon(d, circle) {
@@ -351,6 +366,35 @@ function processNewNodes(result) {
             newItem.id = item[0];
 
             autoNodesToAdd.push(newItem);
+        }
+    );
+
+    _.each(
+        activeFashionNodes, function(node) {
+            var fashionNotExists = _.find(
+                fashionNodesToAdd, function(newNode) {
+                    return newNode.id === node.id;
+                }
+            );
+
+            if (!fashionNotExists) {
+                activateCircle(node, true, true);
+            }
+        }
+    );
+
+    _.each(
+        activeAutoNodes, function(node) {
+            var autoNotExists = _.find(
+                autoNodesToAdd, function(newNode) {
+                    return newNode.id === node.id;
+                }
+            );
+
+            if (!autoNotExists) {
+                node.removeNode = true;
+                activateCircle(node, true, true);
+            }
         }
     );
 

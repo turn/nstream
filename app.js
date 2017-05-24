@@ -39,6 +39,7 @@ app.get(
                         }
                     }
                 );
+
                 _.each(
                     r['1'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
@@ -47,35 +48,11 @@ app.get(
                         }
                     }
                 );
+
                 _.each(
                     r['0'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
-                            users.push(item);
-                        }
-                    }
-                );
-
-                _.each(
-                    r['5'].rows.slice(0, 100), function(item) {
-                        if (!checkDuplicates(users, item)) {
-                            item.beacon = '1603742651';
-                            users.push(item);
-                        }
-                    }
-                );
-                _.each(
-                    r['4'].rows.slice(0, 100), function(item) {
-                        if (!checkDuplicates(users, item)) {
-                            item.beacon = '1603742651';
-                            users.push(item);
-                        }
-                    }
-                );
-                _.each(
-                    r['3'].rows.slice(0, 100), function(item) {
-                        if (!checkDuplicates(users, item)) {
-                            item.beacon = '1603742651';
                             users.push(item);
                         }
                     }
@@ -146,29 +123,27 @@ function getUsers(callback) {
         )
     }
 
-    /*
-     var mockResponse = [];
+    var mockResponse = [];
 
-     for (var i = 0; i < 8; i++) {
-     var responseRow = {
-     rows: []
-     };
+    for (var i = 0; i < 8; i++) {
+        var responseRow = {
+            rows: []
+        };
 
-     for (var j = 0; j < 5; j++) {
-     responseRow.rows.push(
-     [
-     i + (1000 * j) + j
-     ]
-     )
-     }
+        for (var j = 0; j < 5; j++) {
+            responseRow.rows.push(
+                [
+                    i + (1005 * j) + j
+                ]
+            )
+        }
 
-     mockResponse.push(responseRow);
-     }
+        mockResponse.push(responseRow);
+    }
 
-     callback(mockResponse);
+    callback(mockResponse);
 
-     return;
-     */
+    return;
 
     async.map(
         urls, requester, function(err, r) {
