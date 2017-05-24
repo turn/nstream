@@ -145,8 +145,9 @@ function getUsers(callback) {
      callback(mockResponse);
 
      return;
-     */
 
+     */
+    
     async.map(
         urls, requester, function(err, r) {
             if (err) {

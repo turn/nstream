@@ -78,7 +78,7 @@ var activeFashionNodes = [];
 var activeAutoNodes = [];
 var circleQueue = [];
 
-function activateCircle(node, alreadyExists, removeNode) {
+function activateCircle(node, alreadyExists) {
     var lowestScope = null;
     var lowestItem = null;
 
@@ -97,21 +97,15 @@ function activateCircle(node, alreadyExists, removeNode) {
                 }
             }
             else {
-                if (removeNode) {
-                    switchCircleToPool(this, d);
-                }
-                else {
-                    if (node.id === d.id && node.category == d.category) {
-                        lowestScope = this;
-                        lowestItem = d;
-                    }
+                if (node.id === d.id && node.category == d.category) {
+                    lowestScope = this;
+                    lowestItem = d;
                 }
             }
         }
     );
 
     if (lowestItem) {
-        lowestItem.visible = true;
         lowestItem.weight = node.weight;
         lowestItem.category = node.category;
         lowestItem.activated = node.activated;
@@ -131,7 +125,6 @@ function switchCircleToPool(d, circle) {
     d.id = null;
     d.category = null;
     d.weight = null;
-    d.visible = false;
 
     circle.gravityPoint = gravityPoints[0];
     d3.select(d).style('fill', colors[0]);
@@ -370,24 +363,25 @@ function processNewNodes(result) {
             autoNodesToAdd.push(newItem);
         }
     );
+    /*
+     for (var i = 0; i < activeFashionNodes.length; i++) {
+     let node = activeFashionNodes[i];
 
-    for (var i = 0; i < activeFashionNodes.length; i++) {
-        let node = activeFashionNodes[i];
+     if (node.visible && random_expiry()) {
+     activeFashionNodes = _.reject(activeFashionNodes, node);
+     activateCircle(node, true, true);
+     }
+     }
 
-        if (node.visible && random_expiry()) {
-            activeFashionNodes = _.reject(activeFashionNodes, node);
-            activateCircle(node, true, true);
-        }
-    }
+     for (var i = 0; i < activeAutoNodes.length; i++) {
+     let node = activeAutoNodes[i];
 
-    for (var i = 0; i < activeAutoNodes.length; i++) {
-        let node = activeAutoNodes[i];
-
-        if (node.visible && random_expiry()) {
-            activeFashionNodes = _.reject(activeFashionNodes, node);
-            activateCircle(node, true, true);
-        }
-    }
+     if (node.visible && random_expiry()) {
+     activeFashionNodes = _.reject(activeFashionNodes, node);
+     activateCircle(node, true, true);
+     }
+     }
+     */
 
     _.each(
         fashionNodesToAdd, function(node) {
@@ -475,7 +469,7 @@ function random_boolean() {
 }
 
 function random_expiry() {
-    return Math.random() >= 0.7;
+    return Math.random() >= 0.80;
 }
 
 var queueInterval = setInterval(
@@ -487,6 +481,20 @@ var queueInterval = setInterval(
             }
         }
     }, 150
+);
+
+var expiryInterval = setInterval(
+    function() {
+        circles.each(
+            function(d) {
+                let randomExpiry = random_expiry();
+
+                if (d.id && randomExpiry) {
+                    switchCircleToPool(this, d);
+                }
+            }
+        );
+    }, 4000
 );
 
 setTimeout(
