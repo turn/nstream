@@ -371,13 +371,7 @@ function processNewNodes(result) {
 
     _.each(
         activeFashionNodes, function(node) {
-            var fashionNotExists = _.find(
-                fashionNodesToAdd, function(newNode) {
-                    return newNode.id === node.id;
-                }
-            );
-
-            if (!fashionNotExists) {
+            if (random_expiry()) {
                 activateCircle(node, true, true);
             }
         }
@@ -385,13 +379,7 @@ function processNewNodes(result) {
 
     _.each(
         activeAutoNodes, function(node) {
-            var autoNotExists = _.find(
-                autoNodesToAdd, function(newNode) {
-                    return newNode.id === node.id;
-                }
-            );
-
-            if (!autoNotExists) {
+            if (random_expiry()) {
                 node.removeNode = true;
                 activateCircle(node, true, true);
             }
@@ -481,6 +469,10 @@ var pollInterval = setInterval(
 
 function random_boolean() {
     return Math.random() >= 0.5;
+}
+
+function random_expiry() {
+    return Math.random() >= 0.9;
 }
 
 var queueInterval = setInterval(
