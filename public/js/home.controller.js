@@ -371,7 +371,7 @@ function processNewNodes(result) {
 
     _.each(
         activeFashionNodes, function(node) {
-            if (random_expiry()) {
+            if (random_expiry() === true) {
                 activateCircle(node, true, true);
             }
         }
@@ -379,7 +379,7 @@ function processNewNodes(result) {
 
     _.each(
         activeAutoNodes, function(node) {
-            if (random_expiry()) {
+            if (random_expiry() === true) {
                 activateCircle(node, true, true);
             }
         }
@@ -471,7 +471,7 @@ function random_boolean() {
 }
 
 function random_expiry() {
-    return Math.random() >= 0.95;
+    return Math.random() >= 0.90;
 }
 
 var queueInterval = setInterval(
