@@ -99,7 +99,6 @@ function activateCircle(node) {
 function switchCircleToPreBeacon(d, circle) {
     circle.gravityPoint = gravityPoints[1];
     circle.state = 2;
-    circle.radius = 10;
 
     d3.select(d).style('fill', weightColors[circle.weight]);
     d3.select(d).style('r', 10);
@@ -281,6 +280,9 @@ function processNewNodes(result) {
             if (!alreadyExists) {
                 activeNodes.push(node);
                 circleQueue.push(node);
+            }
+            else {
+                alreadyExists.weight = node.weight;
             }
         }
     );

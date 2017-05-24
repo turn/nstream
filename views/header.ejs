@@ -11,6 +11,20 @@
         <script src="node_modules/d3/d3.js"></script>
 
         <style type="text/css">
+            html, body {
+                height: 100%;
+                width: 100%;
+            }
+
+            body {
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,f2f6f8+50,e0eff9+50,e0eff9+100 */
+                background: #f2f6f8; /* Old browsers */
+                background: -moz-linear-gradient(left, #f2f6f8 0%, #f2f6f8 50%, #e0eff9 50%, #e0eff9 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(left, #f2f6f8 0%,#f2f6f8 50%,#e0eff9 50%,#e0eff9 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to right, #f2f6f8 0%,#f2f6f8 50%,#e0eff9 50%,#e0eff9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9',GradientType=1 ); /* IE6-9 */
+            }
+
             #header {
                 width: 90%;
             }
@@ -56,6 +70,13 @@
                 width: 300px;
             }
 
+            #label2 h3 {
+                position: absolute;
+                left: -20px;
+                top: 150px;
+                transform: rotate(-90deg);
+            }
+
             #label3 {
                 position: absolute;
                 top: 500px;
@@ -74,6 +95,13 @@
                 text-transform: uppercase;
                 text-align: center;
                 width: 300px;
+            }
+
+            #label4 h3 {
+                position: absolute;
+                right: -40px;
+                top: 150px;
+                transform: rotate(90deg);
             }
 
             #label5 {
