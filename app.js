@@ -146,72 +146,48 @@ function getUsers(callback) {
         )
     }
 
+    /*
+     var mockResponse = [];
+
+     for (var i = 0; i < 8; i++) {
+     var responseRow = {
+     rows: []
+     };
+
+     for (var j = 0; j < 5; j++) {
+     responseRow.rows.push(
+     [
+     i + (1000 * j) + j
+     ]
+     )
+     }
+
+     mockResponse.push(responseRow);
+     }
+
+     callback(mockResponse);
+
+     return;
+     */
+
     async.map(
         urls, requester, function(err, r) {
             if (err) {
                 return;
             }
 
-            for(var i = 0; i < 8; i++) {
-                r[i].rows.sort(function(a, b) {
-                    return a[0] < b[0];
-                });
+            for (var i = 0; i < 8; i++) {
+                r[i].rows.sort(
+                    function(a, b) {
+                        return a[0] < b[0];
+                    }
+                );
             }
 
             callback(r);
         }
     );
 }
-
-/**
- app.get(
- '/getUsers', (req, res) => {
-        async.map(
-            [
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984210&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984208&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984214&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984213&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984487&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984488&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984489&response-formatter=json',
-                'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984490&response-formatter=json'
-            ],
-            function(file, cb) {
-                request.get(
-                    file, function(err, response, body) {
-                        if (err) {
-                            cb(err);
-                        }
-                        else {
-                            cb(null, body); // First param indicates error, null=> no error
-                        }
-                    }
-                );
-            },
-            function(err, results) {
-                if (err) {
-                    res.send(err);
-                }
-                else {
-                    res.send(
-                        {
-                            fashion0: results[0],
-                            fashion1: results[1],
-                            fashion2: results[2],
-                            fashion3: results[3],
-                            auto1: results[4],
-                            auto2: results[5],
-                            auto3: results[6],
-                            auto4: results[7],
-                        }
-                    )
-                }
-            }
-        );
-    }
- );
- **/
 
 app.listen(
     port, (err) => {

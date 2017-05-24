@@ -5,41 +5,41 @@ jQuery(
 
     }
 );
+
 var width = 1170,
     height = 1600,
     padding = 12;
 
 var colors = [
-    '#999',
+    '#444',
     '#2ca02c'
 ];
 
 var weightColors = [
-    '#4ca9b8',
     '#4cb8b0',
-    '#4c67b8',
-    '#b388e0'
+    '#514BCF',
+    '#C247C5'
 ];
 
 var gravityPoints = [
     {
-        y: 350,
+        y: 450,
         x: 585
     },
     //Fashion 1
     {
-        y: 380,
-        x: 120
+        y: 340,
+        x: 320
     },
     //Fashion 2
     {
-        y: 380,
+        y: 340,
         x: 220
     },
     //Fashion 3
     {
-        y: 380,
-        x: 320
+        y: 340,
+        x: 120
     },
     //Fashion 4
     {
@@ -49,17 +49,17 @@ var gravityPoints = [
 
     //Auto 1
     {
-        y: 380,
+        y: 540,
         x: 820
     },
     //Auto 2
     {
-        y: 380,
+        y: 440,
         x: 920
     },
     //Auto 3
     {
-        y: 380,
+        y: 340,
         x: 1020
     },
     //Auto 4
@@ -81,17 +81,15 @@ var circleQueue = [];
 function activateCircle(node, alreadyExists) {
     var lowestScope = null;
     var lowestItem = null;
-    var furthestScope;
-    var furthestItem;
 
     circles.each(
         function(d) {
-            if(!alreadyExists) {
+            if (!alreadyExists) {
                 if (!lowestItem && !d.id) {
                     lowestScope = this;
                     lowestItem = d;
                 }
-                else if(lowestItem && !d.id) {
+                else if (lowestItem && !d.id) {
                     if (d.py > lowestItem.py) {
                         lowestScope = this;
                         lowestItem = d;
@@ -99,7 +97,7 @@ function activateCircle(node, alreadyExists) {
                 }
             }
             else {
-                if(node.id === d.id && node.category == d.category) {
+                if (node.id === d.id && node.category == d.category) {
                     lowestScope = this;
                     lowestItem = d;
                 }
@@ -107,7 +105,7 @@ function activateCircle(node, alreadyExists) {
         }
     );
 
-    if(lowestItem) {
+    if (lowestItem) {
         lowestItem.weight = node.weight;
         lowestItem.category = node.category;
         lowestItem.activated = node.activated;
@@ -123,32 +121,32 @@ function activateCircle(node, alreadyExists) {
 }
 
 function switchCircleToPreBeacon(d, circle) {
-    if(circle.category !== 'auto') {
-	    if(circle.weight === 0) {
-		    circle.gravityPoint = gravityPoints[1];
-	    }
-	    
-	    if(circle.weight === 1) {
-		    circle.gravityPoint = gravityPoints[2];
-	    }
+    if (circle.category !== 'auto') {
+        if (circle.weight === 0) {
+            circle.gravityPoint = gravityPoints[1];
+        }
 
-	    if(circle.weight === 2) {
-		    circle.gravityPoint = gravityPoints[3];
-	    }
-	}
-	else {
-	    if(circle.weight === 0) {
-		    circle.gravityPoint = gravityPoints[5];
-	    }
-	    
-	    if(circle.weight === 1) {
-		    circle.gravityPoint = gravityPoints[6];
-	    }
+        if (circle.weight === 1) {
+            circle.gravityPoint = gravityPoints[2];
+        }
 
-	    if(circle.weight === 2) {
-		    circle.gravityPoint = gravityPoints[7];
-	    }
-	}
+        if (circle.weight === 2) {
+            circle.gravityPoint = gravityPoints[3];
+        }
+    }
+    else {
+        if (circle.weight === 0) {
+            circle.gravityPoint = gravityPoints[5];
+        }
+
+        if (circle.weight === 1) {
+            circle.gravityPoint = gravityPoints[6];
+        }
+
+        if (circle.weight === 2) {
+            circle.gravityPoint = gravityPoints[7];
+        }
+    }
 
     d3.select(d).style('fill', weightColors[circle.weight]);
     //mainNodes.push(getNode(0, 0, 0, 0));
@@ -291,7 +289,7 @@ function processNewNodes(result) {
     _.each(
         result['fashion2'].rows.slice(0, 100), function(item) {
             var newItem = {};
-            
+
             newItem.weight = 2;
             newItem.category = 'fashion';
             newItem.id = item[0];
@@ -302,7 +300,7 @@ function processNewNodes(result) {
     _.each(
         result['fashion1'].rows.slice(0, 100), function(item) {
             var newItem = {};
-            
+
             newItem.weight = 1;
             newItem.category = 'fashion';
             newItem.id = item[0];
@@ -313,7 +311,7 @@ function processNewNodes(result) {
     _.each(
         result['fashion0'].rows.slice(0, 100), function(item) {
             var newItem = {};
-            
+
             newItem.weight = 0;
             newItem.category = 'fashion';
             newItem.id = item[0];
@@ -324,7 +322,7 @@ function processNewNodes(result) {
     _.each(
         result['car2'].rows.slice(0, 100), function(item) {
             var newItem = {};
-            
+
             newItem.weight = 2;
             newItem.category = 'auto';
             newItem.id = item[0];
@@ -335,7 +333,7 @@ function processNewNodes(result) {
     _.each(
         result['car1'].rows.slice(0, 100), function(item) {
             var newItem = {};
-            
+
             newItem.weight = 1;
             newItem.category = 'auto';
             newItem.id = item[0];
@@ -347,7 +345,7 @@ function processNewNodes(result) {
     _.each(
         result['car0'].rows.slice(0, 100), function(item) {
             var newItem = {};
-            
+
             newItem.weight = 0;
             newItem.category = 'auto';
             newItem.id = item[0];
@@ -406,7 +404,7 @@ function processNewNodes(result) {
 
                 if (isActivated) {
                     node.activated = true;
-                    activateCircle(node, true); 
+                    activateCircle(node, true);
                 }
 
                 alreadyExists.weight = node.weight;
@@ -444,10 +442,12 @@ function random_boolean() {
 var queueInterval = setInterval(
     function() {
         if (circleQueue.length > 0) {
-            activateCircle(circleQueue[0]);
-            circleQueue.shift();
+            if (random_boolean()) {
+                activateCircle(circleQueue[0]);
+                circleQueue.shift();
+            }
         }
-    }, 40
+    }, 150
 );
 
 setTimeout(

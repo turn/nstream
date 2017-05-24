@@ -20,14 +20,15 @@
                 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,f2f6f8+50,e0eff9+50,e0eff9+100 */
                 background: #f2f6f8; /* Old browsers */
                 background: -moz-linear-gradient(left, #f2f6f8 0%, #f2f6f8 50%, #e0eff9 50%, #e0eff9 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left, #f2f6f8 0%,#f2f6f8 50%,#e0eff9 50%,#e0eff9 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right, #f2f6f8 0%,#f2f6f8 50%,#e0eff9 50%,#e0eff9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9',GradientType=1 ); /* IE6-9 */
+                background: -webkit-linear-gradient(left, #f2f6f8 0%, #f2f6f8 50%, #e0eff9 50%, #e0eff9 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to right, #f2f6f8 0%, #f2f6f8 50%, #e0eff9 50%, #e0eff9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=1); /* IE6-9 */
             }
 
             #header {
                 width: 90%;
             }
+
 
             #logo {
                 width: 160px;
@@ -38,19 +39,21 @@
                 height: auto;
             }
 
+            #logo {
+                position: absolute;
+                top: -15px;
+                left: 500px;
+            }
+
             #chart1 {
                 position: absolute;
                 top: 0;
-            }
-
-            #chart2 {
-                position: absolute;
-                top: 0;
+                left: calc(50% - 585px);
             }
 
             #label1 {
                 position: absolute;
-                top: 340px;
+                top: 440px;
                 color: white;
                 font-size: 15px;
                 font-weight: bold;
@@ -63,7 +66,7 @@
             #label2 {
                 position: absolute;
                 top: 220px;
-                left: 90px;
+                left: 70px;
                 color: #777;
                 text-transform: uppercase;
                 text-align: center;
@@ -72,7 +75,7 @@
 
             #label2 h3 {
                 position: absolute;
-                left: -100px;
+                left: -120px;
                 top: 260px;
                 transform: rotate(-90deg);
             }
@@ -80,7 +83,7 @@
             #label3 {
                 position: absolute;
                 top: 500px;
-                left: 90px;
+                left: 70px;
                 color: #777;
                 text-transform: uppercase;
                 text-align: center;
@@ -90,7 +93,7 @@
             #label4 {
                 position: absolute;
                 top: 220px;
-                right: 90px;
+                right: 110px;
                 color: #777;
                 text-transform: uppercase;
                 text-align: center;
@@ -99,7 +102,7 @@
 
             #label4 h3 {
                 position: absolute;
-                right: -100px;
+                right: -120px;
                 top: 260px;
                 transform: rotate(90deg);
             }
@@ -113,6 +116,51 @@
                 text-align: center;
                 width: 300px;
             }
+
+            #intentLabel {
+                position: absolute;
+                left: calc(50% - 110px);
+                top: 80px;
+                text-align: center;
+                color: #777777;
+                font-size: 10px;
+            }
+
+            #intentLabel #lowerLabel {
+                position: absolute;
+                top: 25px;
+                left: 0;
+            }
+
+            #intentLabel #highLabel {
+                position: absolute;
+                top: 25px;
+                right: 0;
+            }
+
+            #intentLegendBar #bar {
+                width: 200px;
+                height: 10px;
+
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4cb8b0+0,514bcf+50,c247c5+100 */
+                background: #4cb8b0; /* Old browsers */
+                background: -moz-linear-gradient(left, #4cb8b0 0%, #514bcf 50%, #c247c5 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(left, #4cb8b0 0%, #514bcf 50%, #c247c5 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to right, #4cb8b0 0%, #514bcf 50%, #c247c5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4cb8b0', endColorstr='#c247c5', GradientType=1); /* IE6-9 */
+            }
+
+            section.container {
+                width: 100%;
+                height: 100%;
+                text-align: center;
+
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f0f9ff+0,a1dbff+100&0.4+0,0.2+100 */
+                background: -moz-radial-gradient(center, ellipse cover, rgba(240, 249, 255, 0.4) 0%, rgba(161, 219, 255, 0.2) 100%); /* FF3.6-15 */
+                background: -webkit-radial-gradient(center, ellipse cover, rgba(240, 249, 255, 0.4) 0%, rgba(161, 219, 255, 0.2) 100%); /* Chrome10-25,Safari5.1-6 */
+                background: radial-gradient(ellipse at center, rgba(240, 249, 255, 0.4) 0%, rgba(161, 219, 255, 0.2) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#66f0f9ff', endColorstr='#33a1dbff', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+            }
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -120,7 +168,8 @@
     </head>
 
     <body>
-        <div class="navbar navbar-default navbar-fixed-top">
+        <!--
+            <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <nav class="navbar-header">
                     <div id="logo">
@@ -129,4 +178,5 @@
                 </nav>
             </div>
         </div>
+            -->
         <section class="container">
