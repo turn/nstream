@@ -372,9 +372,8 @@ function processNewNodes(result) {
     for (var i = 0; i < activeFashionNodes.length; i++) {
         let node = activeFashionNodes[i];
 
-        console.log('activeFashionExpiryCheck');
-
         if (random_expiry()) {
+            activeFashionNodes = _.reject(activeFashionNodes, node);
             activateCircle(node, true, true);
         }
     }
@@ -382,9 +381,8 @@ function processNewNodes(result) {
     for (var i = 0; i < activeAutoNodes.length; i++) {
         let node = activeAutoNodes[i];
 
-        console.log('autoExpiryCheck');
-
         if (random_expiry()) {
+            activeAutoNodes = _.reject(activeFashionNodes, node);
             activateCircle(node, true, true);
         }
     }
