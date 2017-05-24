@@ -183,7 +183,7 @@ function collide(alpha, nodes) {
                         r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
 
                     if (l < r) {
-                        l = (l - r) / l * .1;
+                        l = (l - r) / l * .12;
                         d.x -= x *= l;
                         d.y -= y *= l;
                         quad.point.x += x;
