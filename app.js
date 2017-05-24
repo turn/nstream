@@ -146,8 +146,8 @@ function getUsers(callback) {
 
      return;
 
-     */
-
+*/
+    
     async.map(
         urls, requester, function(err, r) {
             if (err) {

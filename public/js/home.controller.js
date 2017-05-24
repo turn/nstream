@@ -11,7 +11,7 @@ var width = 1170,
     padding = 12;
 
 var colors = [
-    '#444',
+    '#666',
     '#2ca02c'
 ];
 
@@ -491,6 +491,18 @@ var expiryInterval = setInterval(
 
                 if (d.id && randomExpiry) {
                     if (!d.activated || (d.activated && random_expiry())) {
+                        activeFashionNodes = _.reject(
+                            activeFashionNodes, function(item) {
+                                return d.id === item.id;
+                            }
+                        );
+
+                        activeAutoNodes = _.reject(
+                            activeAutoNodes, function(item) {
+                                return d.id === item.id;
+                            }
+                        );
+
                         switchCircleToPool(this, d);
                     }
                 }
