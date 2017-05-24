@@ -101,8 +101,6 @@ function switchCircleToPreBeacon(d, circle) {
     circle.state = 2;
 
     d3.select(d).style('fill', weightColors[circle.weight]);
-    d3.select(d).style('r', 10);
-
     //mainNodes.push(getNode(0, 0, 0, 0));
 }
 
