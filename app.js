@@ -123,27 +123,29 @@ function getUsers(callback) {
         )
     }
 
-    var mockResponse = [];
+    /*
+     var mockResponse = [];
 
-    for (var i = 0; i < 8; i++) {
-        var responseRow = {
-            rows: []
-        };
+     for (var i = 0; i < 8; i++) {
+     var responseRow = {
+     rows: []
+     };
 
-        for (var j = 0; j < 5; j++) {
-            responseRow.rows.push(
-                [
-                    i + (1005 * j) + j
-                ]
-            )
-        }
+     for (var j = 0; j < 5; j++) {
+     responseRow.rows.push(
+     [
+     i + (1005 * j) + j
+     ]
+     )
+     }
 
-        mockResponse.push(responseRow);
-    }
+     mockResponse.push(responseRow);
+     }
 
-    callback(mockResponse);
+     callback(mockResponse);
 
-    return;
+     return;
+     */
 
     async.map(
         urls, requester, function(err, r) {
