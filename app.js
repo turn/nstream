@@ -26,13 +26,13 @@ app.get(
 );
 
 app.get(
-    '/beacon', (request, response) => {
+    '/beacon', (req, origRes) => {
         getUsers(
             function(r) {
                 var users = [];
 
                 _.each(
-                    r['3'].rows, function(item) {
+                    r['2'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
                             users.push(item);
@@ -40,7 +40,7 @@ app.get(
                     }
                 );
                 _.each(
-                    r['2'].rows, function(item) {
+                    r['1'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
                             users.push(item);
@@ -48,15 +48,7 @@ app.get(
                     }
                 );
                 _.each(
-                    r['1'].rows, function(item) {
-                        if (!checkDuplicates(users, item)) {
-                            item.beacon = '1603742742';
-                            users.push(item);
-                        }
-                    }
-                );
-                _.each(
-                    r['0'].rows, function(item) {
+                    r['0'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
                             users.push(item);
@@ -65,7 +57,7 @@ app.get(
                 );
 
                 _.each(
-                    r['7'].rows, function(item) {
+                    r['5'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742651';
                             users.push(item);
@@ -73,7 +65,7 @@ app.get(
                     }
                 );
                 _.each(
-                    r['6'].rows, function(item) {
+                    r['4'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742651';
                             users.push(item);
@@ -81,15 +73,7 @@ app.get(
                     }
                 );
                 _.each(
-                    r['5'].rows, function(item) {
-                        if (!checkDuplicates(users, item)) {
-                            item.beacon = '1603742651';
-                            users.push(item);
-                        }
-                    }
-                );
-                _.each(
-                    r['4'].rows, function(item) {
+                    r['3'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742651';
                             users.push(item);
@@ -102,7 +86,7 @@ app.get(
                 request(
                     'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=set_beacon&turn_category_id=&user_ids=' + user
                     + '&beacon_id=' + user.beacon + '&response-formatter=json', function(err, res, body) {
-                        res.send(res);
+                        origRes.send(res);
                     }
                 );
             }
@@ -127,13 +111,11 @@ app.get(
                         fashion0: r[0],
                         fashion1: r[1],
                         fashion2: r[2],
-                        fashion3: r[3],
-                        car0: r[4],
-                        car1: r[5],
-                        car2: r[6],
-                        car3: r[7],
-                        fashionBeacon: r[8],
-                        carBeacon: r[9]
+                        car0: r[3],
+                        car1: r[4],
+                        car2: r[5],
+                        fashionBeacon: r[6],
+                        carBeacon: r[7]
                     }
                 )
             }
@@ -146,11 +128,9 @@ function getUsers(callback) {
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984210&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984208&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984214&response-formatter=json',
-        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984213&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984487&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984488&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984489&response-formatter=json',
-        'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=dump_users&turn_category_id=31984490&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742742&response-formatter=json',
         'http://prof084.sjc2.turn.com:4900/execute?command=command+streamer+&action=get_beacon&turn_category_id=&user_ids=&beacon_id=1603742651&response-formatter=json'
     ];
@@ -170,6 +150,12 @@ function getUsers(callback) {
         urls, requester, function(err, r) {
             if (err) {
                 return;
+            }
+
+            for(var i = 0; i < 8; i++) {
+                r[i].rows.sort(function(a, b) {
+                    return a[0] < b[0];
+                });
             }
 
             callback(r);

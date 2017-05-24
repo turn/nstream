@@ -23,30 +23,50 @@ var weightColors = [
 
 var gravityPoints = [
     {
-        id: 1,
         y: 350,
         x: 585
     },
+    //Fashion 1
     {
-        id: 2,
+        y: 380,
+        x: 120
+    },
+    //Fashion 2
+    {
         y: 380,
         x: 220
     },
+    //Fashion 3
     {
-        id: 3,
+        y: 380,
+        x: 320
+    },
+    //Fashion 4
+    {
         y: 620,
         x: 220
     },
+
+    //Auto 1
     {
-        id: 4,
         y: 380,
-        x: 720
+        x: 820
     },
+    //Auto 2
     {
-        id: 5,
+        y: 380,
+        x: 920
+    },
+    //Auto 3
+    {
+        y: 380,
+        x: 1020
+    },
+    //Auto 4
+    {
         y: 620,
-        x: 720
-    }
+        x: 920
+    },
 ];
 
 var mainNodes = getNodes(1000, 160);
@@ -54,10 +74,11 @@ var throttle = 0;
 var throttleMax = 5;
 var circles = runSimulation('#chart1', mainNodes);
 
-var activeNodes = [];
+var activeFashionNodes = [];
+var activeAutoNodes = [];
 var circleQueue = [];
 
-function activateCircle(node) {
+function activateCircle(node, alreadyExists) {
     var lowestScope = null;
     var lowestItem = null;
     var furthestScope;
@@ -65,63 +86,78 @@ function activateCircle(node) {
 
     circles.each(
         function(d) {
-            if (d.state === 1) {
-                if (!lowestItem) {
+            if(!alreadyExists) {
+                if (!lowestItem && !d.id) {
                     lowestScope = this;
                     lowestItem = d;
                 }
-                else {
+                else if(lowestItem && !d.id) {
                     if (d.py > lowestItem.py) {
                         lowestScope = this;
                         lowestItem = d;
                     }
                 }
             }
-            else if (d.state === 2) {
-                if (throttle > throttleMax) {
-                    throttle = 0;
-
-                    if (!furthestScope) {
-                        furthestScope = this;
-                        furthestItem = d;
-                    }
-                    else {
-                        if (d.px > furthestItem.px) {
-                            furthestScope = this;
-                            furthestItem = d;
-                        }
-                    }
+            else {
+                if(node.id === d.id && node.category == d.category) {
+                    lowestScope = this;
+                    lowestItem = d;
                 }
             }
         }
     );
 
-    lowestItem.weight = node.weight;
+    if(lowestItem) {
+        lowestItem.weight = node.weight;
+        lowestItem.category = node.category;
+        lowestItem.activated = node.activated;
+        lowestItem.id = node.id;
 
-    if (!node.activated) {
-        switchCircleToPreBeacon(lowestScope, lowestItem);
-    }
-    else {
-        switchCircleToBeacon(lowestScope, lowestItem);
+        if (!node.activated) {
+            switchCircleToPreBeacon(lowestScope, lowestItem);
+        }
+        else {
+            switchCircleToBeacon(lowestScope, lowestItem);
+        }
     }
 }
 
 function switchCircleToPreBeacon(d, circle) {
-    circle.gravityPoint = circle.category === 'auto' ? gravityPoints[3] : gravityPoints[1];
-    circle.state = 2;
+    if(circle.category !== 'auto') {
+	    if(circle.weight === 0) {
+		    circle.gravityPoint = gravityPoints[1];
+	    }
+	    
+	    if(circle.weight === 1) {
+		    circle.gravityPoint = gravityPoints[2];
+	    }
+
+	    if(circle.weight === 2) {
+		    circle.gravityPoint = gravityPoints[3];
+	    }
+	}
+	else {
+	    if(circle.weight === 0) {
+		    circle.gravityPoint = gravityPoints[5];
+	    }
+	    
+	    if(circle.weight === 1) {
+		    circle.gravityPoint = gravityPoints[6];
+	    }
+
+	    if(circle.weight === 2) {
+		    circle.gravityPoint = gravityPoints[7];
+	    }
+	}
 
     d3.select(d).style('fill', weightColors[circle.weight]);
     //mainNodes.push(getNode(0, 0, 0, 0));
 }
 
 function switchCircleToBeacon(d, circle) {
-    var color = d3.scale.category10().domain(d3.range(10));
+    circle.gravityPoint = circle.category === 'auto' ? gravityPoints[8] : gravityPoints[4];
 
-    circle.gravityPoint = circle.category === 'auto' ? gravityPoints[5] : gravityPoints[2];
-    circle.state = 3;
-
-    d3.select(d).style('fill', colors[2]);
-
+    d3.select(d).style('fill', colors[1]);
     //mainNodes.push(getNode(0, 0, 0, 0));
 }
 
@@ -150,8 +186,7 @@ function getNode(i, m, yGravity) {
         color: colors[0],
         cx: x(i),
         cy: yGravity,
-        gravityPoint: gravityPoints[0],
-        state: 1
+        gravityPoint: gravityPoints[0]
     };
 }
 
@@ -250,94 +285,131 @@ function runSimulation(htmlId, nodes) {
 }
 
 function processNewNodes(result) {
-    var nodesToAdd = [];
+    var fashionNodesToAdd = [];
+    var autoNodesToAdd = [];
 
     _.each(
-        result['fashion3'].rows, function(item) {
-            item.weight = 3;
-            nodesToAdd.push(item);
+        result['fashion2'].rows.slice(0, 100), function(item) {
+            var newItem = {};
+            
+            newItem.weight = 2;
+            newItem.category = 'fashion';
+            newItem.id = item[0];
+
+            fashionNodesToAdd.push(newItem);
         }
     );
     _.each(
-        result['fashion2'].rows, function(item) {
-            item.weight = 2;
-            nodesToAdd.push(item);
+        result['fashion1'].rows.slice(0, 100), function(item) {
+            var newItem = {};
+            
+            newItem.weight = 1;
+            newItem.category = 'fashion';
+            newItem.id = item[0];
+
+            fashionNodesToAdd.push(newItem);
         }
     );
     _.each(
-        result['fashion1'].rows, function(item) {
-            item.weight = 1;
-            nodesToAdd.push(item);
+        result['fashion0'].rows.slice(0, 100), function(item) {
+            var newItem = {};
+            
+            newItem.weight = 0;
+            newItem.category = 'fashion';
+            newItem.id = item[0];
+
+            fashionNodesToAdd.push(newItem);
         }
     );
     _.each(
-        result['fashion0'].rows, function(item) {
-            item.weight = 0;
-            nodesToAdd.push(item);
+        result['car2'].rows.slice(0, 100), function(item) {
+            var newItem = {};
+            
+            newItem.weight = 2;
+            newItem.category = 'auto';
+            newItem.id = item[0];
+
+            autoNodesToAdd.push(newItem);
+        }
+    );
+    _.each(
+        result['car1'].rows.slice(0, 100), function(item) {
+            var newItem = {};
+            
+            newItem.weight = 1;
+            newItem.category = 'auto';
+            newItem.id = item[0];
+
+            autoNodesToAdd.push(newItem);
         }
     );
 
     _.each(
-        result['car0'].rows, function(item) {
-            item.weight = 3;
-            item.category = 'auto';
-            nodesToAdd.push(item);
-        }
-    );
-    _.each(
-        result['car1'].rows, function(item) {
-            item.weight = 2;
-            item.category = 'auto';
-            nodesToAdd.push(item);
-        }
-    );
-    _.each(
-        result['car2'].rows, function(item) {
-            item.weight = 1;
-            item.category = 'auto';
-            nodesToAdd.push(item);
-        }
-    );
-    _.each(
-        result['car3'].rows, function(item) {
-            item.weight = 0;
-            item.category = 'auto';
-            nodesToAdd.push(item);
+        result['car0'].rows.slice(0, 100), function(item) {
+            var newItem = {};
+            
+            newItem.weight = 0;
+            newItem.category = 'auto';
+            newItem.id = item[0];
+
+            autoNodesToAdd.push(newItem);
         }
     );
 
     _.each(
-        nodesToAdd, function(node) {
+        fashionNodesToAdd, function(node) {
             var alreadyExists = _.find(
-                activeNodes, function(item) {
-                    return item[0] === node[0];
+                activeFashionNodes, function(item) {
+                    return item.id === node.id;
                 }
             );
 
             if (!alreadyExists) {
-                activeNodes.push(node);
+                activeFashionNodes.push(node);
                 circleQueue.push(node);
             }
             else {
+                var isActivated = _.find(
+                    result['fashionBeacon'].rows, function(item) {
+                        return item[0] === node.id;
+                    }
+                );
+
+                if (isActivated) {
+                    node.activated = true;
+                    activateCircle(node, true);
+                }
+
                 alreadyExists.weight = node.weight;
             }
+        }
+    );
 
-            var isActived = _.find(
-                result['fashionBeacon'].rows, function(item) {
-                    return item[0] === node[0];
+    _.each(
+        autoNodesToAdd, function(node) {
+            var alreadyExists = _.find(
+                activeAutoNodes, function(item) {
+                    return item.id === node.id;
                 }
             );
 
-            if (!isActived) {
-                isActived = _.find(
+            if (!alreadyExists) {
+                activeAutoNodes.push(node);
+                circleQueue.push(node);
+            }
+            else {
+                var isActivated = _.find(
                     result['carBeacon'].rows, function(item) {
-                        return item[0] === node[0];
+                        return item[0] === node.id;
                     }
                 );
-            }
 
-            if (isActived) {
-                node.activated = true;
+                if (isActivated) {
+                    node.activated = true;
+                    activateCircle(node, true); 
+                }
+
+                alreadyExists.weight = node.weight;
             }
         }
     );
@@ -352,71 +424,6 @@ function getAllUsers() {
                 '/getUsers',
                 {},
                 function(data) {
-                    /**var data = {
-                fashion0: {
-                    "columns": ["user_id (for category_id=31984208)"],
-                    "warnings": [],
-                    "header": [],
-                    "rows": [
-                        ["3118213610035373959"],
-                        ["3737315022181373557"],
-                        ["2406378874252901713"],
-                        ["3190302140996869223"],
-                        ["3359252916128457505"],
-                        ["2843554010745620484"]
-                    ],
-                    "errors": [],
-                    "info": ["Number of users: 6"]
-                },
-                fashion1: {
-                    "columns": ["user_id (for category_id=31984208)"],
-                    "warnings": [],
-                    "header": [],
-                    "rows": [
-                        ["3118213g6100351373959"],
-                        ["37373150da22181373557"],
-                        ["240637fas8874252901713"],
-                        ["31903021409968asd69223"],
-                        ["3359252916128457505"],
-                        ["28435a540107456g20484"]
-                    ],
-                    "errors": [],
-                    "info": ["Number of users: 6"]
-                },
-                fashion2: {
-                    "columns": ["user_id (for category_id=31984208)"],
-                    "warnings": [],
-                    "header": [],
-                    "rows": [
-                        ["3118213a610035373959"],
-                        ["37373150221813173557"],
-                        ["2406378g874252901713"],
-                        ["319030214g0996869223"],
-                        ["33592529g161284a57505"],
-                        ["284355401g0745620484"]
-                    ],
-                    "errors": [],
-                    "info": ["Number of users: 6"]
-                },
-                fashion3: {
-                    "columns": ["user_id (for category_id=31984208)"],
-                    "warnings": [],
-                    "header": [],
-                    "rows": [
-                        ["3118213610g035373959"],
-                        ["3737315022181373557"],
-                        ["240637asd8874252901713"],
-                        ["3190302140996869223"],
-                        ["3359252916128457505"],
-                        ["2843554010asda745620484"]
-                    ],
-                    "errors": [],
-                    "info": ["Number of users: 6"]
-                }
-            };
-
-                     **/
-
                     callback(data);
                 }
             );
@@ -438,14 +445,9 @@ var queueInterval = setInterval(
     function() {
         if (circleQueue.length > 0) {
             activateCircle(circleQueue[0]);
-
             circleQueue.shift();
-
-            if (random_boolean()) {
-                circleQueue.shift();
-            }
         }
-    }, 200
+    }, 40
 );
 
 setTimeout(
