@@ -1,11 +1,5 @@
 'use strict';
 
-jQuery(
-    function() {
-
-    }
-);
-
 var width = 1170,
     height = 1600,
     padding = 12;
@@ -118,16 +112,19 @@ function activateCircle(node, alreadyExists) {
             switchCircleToBeacon(lowestScope, lowestItem);
         }
     }
+    else {
+        console.log('no lowest item');
+    }
 }
 
-function switchCircleToPool(d, circle) {
-    d.activated = false;
-    d.id = null;
-    d.category = null;
-    d.weight = null;
+function switchCircleToPool(scope, circle) {
+    circle.activated = false;
+    circle.id = null;
+    circle.category = null;
+    circle.weight = null;
 
     circle.gravityPoint = gravityPoints[0];
-    d3.select(d).style('fill', colors[0]);
+    d3.select(scope).style('fill', colors[0]);
 }
 
 function switchCircleToPreBeacon(d, circle) {
