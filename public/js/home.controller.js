@@ -294,7 +294,7 @@ function processNewNodes(result) {
     var autoNodesToAdd = [];
 
     _.each(
-        result['fashion2'].rows.slice(0, 100), function(item) {
+        result['fashion2'].rows, function(item) {
             var newItem = {};
 
             newItem.weight = 2;
@@ -305,7 +305,7 @@ function processNewNodes(result) {
         }
     );
     _.each(
-        result['fashion1'].rows.slice(0, 100), function(item) {
+        result['fashion1'].rows, function(item) {
             var newItem = {};
 
             newItem.weight = 1;
@@ -316,7 +316,7 @@ function processNewNodes(result) {
         }
     );
     _.each(
-        result['fashion0'].rows.slice(0, 100), function(item) {
+        result['fashion0'].rows, function(item) {
             var newItem = {};
 
             newItem.weight = 0;
@@ -327,7 +327,7 @@ function processNewNodes(result) {
         }
     );
     _.each(
-        result['car2'].rows.slice(0, 100), function(item) {
+        result['car2'].rows, function(item) {
             var newItem = {};
 
             newItem.weight = 2;
@@ -338,7 +338,7 @@ function processNewNodes(result) {
         }
     );
     _.each(
-        result['car1'].rows.slice(0, 100), function(item) {
+        result['car1'].rows, function(item) {
             var newItem = {};
 
             newItem.weight = 1;
@@ -350,7 +350,7 @@ function processNewNodes(result) {
     );
 
     _.each(
-        result['car0'].rows.slice(0, 100), function(item) {
+        result['car0'].rows, function(item) {
             var newItem = {};
 
             newItem.weight = 0;
