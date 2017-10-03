@@ -32,7 +32,7 @@ app.get(
                 var users = [];
 
                 _.each(
-                    r['2'].rows.slice(0, 75), function(item) {
+                    r['2'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
                             users.push(item);
@@ -41,7 +41,7 @@ app.get(
                 );
 
                 _.each(
-                    r['1'].rows.slice(0, 75), function(item) {
+                    r['1'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
                             users.push(item);
@@ -50,7 +50,7 @@ app.get(
                 );
 
                 _.each(
-                    r['0'].rows.slice(0, 75), function(item) {
+                    r['0'].rows.slice(0, 100), function(item) {
                         if (!checkDuplicates(users, item)) {
                             item.beacon = '1603742742';
                             users.push(item);
