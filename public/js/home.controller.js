@@ -162,7 +162,7 @@ function switchCircleToPreBeacon(d, circle) {
 function switchCircleToBeacon(d, circle) {
     circle.gravityPoint = circle.category === 'auto' ? gravityPoints[8] : gravityPoints[4];
 
-    d3.select(d).style('fill', colors[1]);
+    //d3.select(d).style('fill', colors[1]);
     //mainNodes.push(getNode(0, 0, 0, 0));
 }
 
